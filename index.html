@@ -2,12 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agro Forte | Futuro Sustentável</title>
-    <meta name="description" content="Equilíbrio entre produção agrícola e preservação ambiental: tecnologias verdes, práticas regenerativas e dados interativos.">
-    <!-- Font Awesome 6 (gratuito, via CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- CSS externo -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,20 +14,20 @@
                 <i class="fas fa-seedling"></i>
                 <span>AgroForte+Sustentável</span>
             </div>
-            <button class="menu-toggle" id="menuToggle" aria-label="Menu de navegação">
+            <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="active">Início</a></li>
+                <li><a href="#home">Início</a></li>
                 <li><a href="#praticas">Práticas</a></li>
-                <li><a href="#simulador">Simulador ESG</a></li>
-                <li><a href="#quiz">Quiz Verde</a></li>
+                <li><a href="#simulador">Simulador</a></li>
+                <li><a href="#quiz">Quiz</a></li>
             </ul>
         </div>
     </header>
 
     <main>
-        <!-- Hero (home) -->
+        <!-- SEÇÃO HOME -->
         <section id="home" class="hero">
             <div class="container hero-content">
                 <h1>🌾 Agro forte, futuro sustentável</h1>
@@ -39,10 +36,10 @@
             </div>
         </section>
 
-        <!-- Seção de práticas sustentáveis -->
+        <!-- SEÇÃO PRÁTICAS -->
         <section id="praticas">
             <div class="container">
-                <h2 class="section-title">Práticas regenerativas</h2>
+                <h2 class="section-title">🌿 Práticas regenerativas</h2>
                 <div class="cards-grid">
                     <div class="card">
                         <i class="fas fa-tractor"></i>
@@ -68,50 +65,49 @@
             </div>
         </section>
 
-        <!-- Simulador Interativo (JavaScript + DOM + lógica) -->
+        <!-- SEÇÃO SIMULADOR -->
         <section id="simulador">
             <div class="container">
                 <h2 class="section-title">🌱 Simulador de pegada sustentável</h2>
                 <div class="simulator-box">
                     <div class="sim-control">
                         <label for="hectares">🌽 Área cultivada (hectares)</label>
-                        <input type="number" id="hectares" value="100" step="10" min="10">
-
+                        <input type="number" id="hectares" value="100" step="10" min="1">
+                        
                         <label for="tecnologia">🔧 Nível tecnológico sustentável</label>
                         <select id="tecnologia">
                             <option value="0.8">Tradicional (baixo verde)</option>
                             <option value="1.2" selected>Conservacionista (médio)</option>
                             <option value="1.8">Agroecológico + IoT (alto)</option>
                         </select>
-                        <small class="info-badge">* Índice de eficiência ambiental</small>
+                        <small style="color: #555;">* Índice de eficiência ambiental</small>
                     </div>
-                    <div class="result-area" id="resultArea">
+                    <div class="result-area">
                         <i class="fas fa-charging-station" style="font-size: 2rem; color:#2e7d32;"></i>
                         <p>🌿 Estimativa de captura de carbono/ano:</p>
                         <div class="result-value" id="carbonoValue">---</div>
-                        <p id="mensagemDinamica" style="font-size: 0.9rem;">💡 escolha parâmetros</p>
+                        <p id="mensagemDinamica" style="font-size: 0.9rem;">💡 escolha os parâmetros</p>
                     </div>
                 </div>
-                <!-- barra extra com interatividade e validação dinâmica -->
-                <div style="margin-top: 1rem; text-align: center;">
+                <div style="text-align: center; margin-top: 1.5rem;">
                     <button id="calcularBtn" class="btn"><i class="fas fa-calculator"></i> Calcular impacto</button>
                     <button id="resetSimulador" class="btn" style="background:#546e7a;"><i class="fas fa-undo-alt"></i> Resetar</button>
                 </div>
             </div>
         </section>
 
-        <!-- Quiz interativo (eventos clique, transições, acessibilidade) -->
+        <!-- SEÇÃO QUIZ -->
         <section id="quiz">
             <div class="container">
                 <h2 class="section-title">🧠 Quiz: você conhece a agro sustentável?</h2>
-                <div class="quiz-card" id="quizCard">
+                <div class="quiz-card">
                     <div class="quiz-question" id="quizQuestion">Carregando pergunta...</div>
                     <div class="quiz-options" id="quizOptions"></div>
                     <div class="quiz-feedback" id="quizFeedback"></div>
                     <button id="nextQuizBtn" class="btn" style="background: #5e8b5e; margin-top: 1rem;">Próxima pergunta →</button>
                 </div>
                 <div style="text-align: center; margin-top: 1rem;">
-                    <span id="quizScoreText" style="font-weight: bold;">✅ Pontuação: 0/0</span>
+                    <span id="quizScoreText" style="font-weight: bold; font-size: 1.1rem;">✅ Pontuação: 0/0</span>
                 </div>
             </div>
         </section>
@@ -124,7 +120,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript externo -->
     <script src="script.js"></script>
 </body>
 </html>
