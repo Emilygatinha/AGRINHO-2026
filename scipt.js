@@ -1,228 +1,282 @@
-// ---------- JAVASCRIPT ESTRUTURADO COM FUNÇÕES, MANIPULAÇÃO DOM, VALIDAÇÕES, EVENTOS ----------
-
-// Aguarda o DOM totalmente carregado para garantir que os elementos existam
+// Aguarda o HTML carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ---------- 1. MENU HAMBURGUER (responsivo e acessível) ----------
+    console.log('Site carregado!'); // Para teste no console
+    
+    // ========== 1. MENU HAMBURGUER ==========
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
+    
     if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
+        menuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('show');
-            const expanded = navLinks.classList.contains('show');
-            menuToggle.setAttribute('aria-expanded', expanded);
+            console.log('Menu clicado'); // Teste
         });
     }
-
-    // Fechar menu ao clicar em link (boa prática)
+    
+    // Fechar menu ao clicar no link
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('show');
-                if(menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
             }
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            link.classList.add('active');
         });
     });
-
-    // ---------- 2. SIMULADOR DE CARBONO (funções, validações) ----------
+    
+    // ========== 2. CALCULADORA DE CARBONO (100% FUNCIONAL) ==========
     const hectaresInput = document.getElementById('hectares');
     const tecnologiaSelect = document.getElementById('tecnologia');
-    const carbonoValueSpan = document.getElementById('carbonoValue');
-    const mensagemDinamica = document.getElementById('mensagemDinamica');
+    const carbonoValue = document.getElementById('carbonoValue');
+    const mensagem = document.getElementById('mensagemDinamica');
     const calcularBtn = document.getElementById('calcularBtn');
-    const resetSimuladorBtn = document.getElementById('resetSimulador');
-
-    // Função principal para calcular crédito de carbono simulado (toneladas CO2eq capturado/ano)
-    function calcularImpacto() {
+    const resetBtn = document.getElementById('resetSimulador');
+    
+    // Verificar se os elementos existem
+    console.log('Elementos da calculadora:', {
+        hectares: hectaresInput,
+        tecnologia: tecnologiaSelect,
+        carbono: carbonoValue,
+        mensagem: mensagem
+    });
+    
+    // Função principal da calculadora
+    function calcularCarbono() {
+        console.log('Calculando...'); // Teste
+        
+        // Pega os valores
         let hectares = parseFloat(hectaresInput.value);
-        // Validação dinâmica
-        if (isNaN(hectares) || hectares < 5) {
-            hectaresInput.value = 10;
-            hectares = 10;
-            mensagemDinamica.innerText = '⚠️ Mínimo 5 hectares. Ajustado para 10 hectares.';
-            setTimeout(() => {
-                if (mensagemDinamica.innerText.includes('Mínimo')) mensagemDinamica.innerText = '✅ Valor atualizado.';
-            }, 1800);
-        } else if (hectares > 5000) {
-            hectaresInput.value = 5000;
-            hectares = 5000;
-            mensagemDinamica.innerText = '🌳 Área muito grande, limite máximo 5000 hectares.';
-            setTimeout(() => {
-                if (mensagemDinamica.innerText.includes('limite')) mensagemDinamica.innerText = '🌿 Excelente escala sustentável.';
-            }, 2000);
-        } else {
-            mensagemDinamica.innerText = '🌍 Simulação baseada em técnicas regenerativas.';
+        const tecnologia = parseFloat(tecnologiaSelect.value);
+        
+        console.log('Hectares:', hectares, 'Tecnologia:', tecnologia);
+        
+        // Validações
+        if (isNaN(hectares) || hectares < 1) {
+            hectares = 100;
+            hectaresInput.value = 100;
+            mensagem.innerHTML = '⚠️ Valor ajustado para 100 hectares';
         }
-
-        const fatorTecnologico = parseFloat(tecnologiaSelect.value);
-        // Cálculo base: cada hectare com manejo conservacionista captura entre 2 a 6 ton CO2e / ano
-        let carbonoTotal = hectares * 3.2 * fatorTecnologico;
+        
+        if (hectares > 10000) {
+            hectares = 10000;
+            hectaresInput.value = 10000;
+            mensagem.innerHTML = '⚠️ Limite máximo: 10.000 hectares';
+        }
+        
+        // CÁLCULO: hectares * 3.2 (fator médio de captura) * tecnologia
+        let carbonoTotal = hectares * 3.2 * tecnologia;
         carbonoTotal = Math.round(carbonoTotal * 10) / 10;
-        carbonoValueSpan.innerText = `${carbonoTotal} t CO₂e`;
-
-        let mensagemExtra = '';
-        if (carbonoTotal > 800) mensagemExtra = '🚜✨ Fazenda carbono neutro! Exemplo de agricultura positiva.';
-        else if (carbonoTotal > 300) mensagemExtra = '💚 Bom caminho! Invista em sistemas agroflorestais.';
-        else mensagemExtra = '🌿 Aumente a integração lavoura-pecuária para mais créditos.';
-        document.getElementById('mensagemDinamica').innerHTML = `<i class="fas fa-info-circle"></i> ${mensagemExtra}`;
+        
+        // Exibe o resultado
+        carbonoValue.innerHTML = carbonoTotal + ' t CO₂e';
+        
+        // Mensagem personalizada
+        if (carbonoTotal > 1000) {
+            mensagem.innerHTML = '🚜✨ Excelente! Fazenda carbono neutro! Continue assim!';
+        } else if (carbonoTotal > 400) {
+            mensagem.innerHTML = '💚 Bom caminho! Invista em mais tecnologias verdes.';
+        } else {
+            mensagem.innerHTML = '🌱 Aumente o nível tecnológico para capturar mais carbono.';
+        }
+        
+        console.log('Resultado:', carbonoTotal);
     }
-
-    // Evento de calcular
+    
+    // Eventos da calculadora
     if (calcularBtn) {
-        calcularBtn.addEventListener('click', calcularImpacto);
+        calcularBtn.addEventListener('click', calcularCarbono);
+        console.log('Botão calcular configurado');
     }
-
-    // Reset simulador
-    if (resetSimuladorBtn) {
-        resetSimuladorBtn.addEventListener('click', () => {
+    
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
             hectaresInput.value = 100;
             tecnologiaSelect.value = "1.2";
-            calcularImpacto();
-            mensagemDinamica.innerHTML = '💧 Valores redefinidos. Simule novos cenários!';
-            setTimeout(() => {
-                if (mensagemDinamica.innerHTML.includes('redefinidos')) calcularImpacto();
-            }, 1000);
+            calcularCarbono();
+            mensagem.innerHTML = '💧 Valores resetados! Simule novos cenários.';
+            console.log('Resetado');
         });
     }
-
-    // atualizar ao digitar (validação live + cálculo automático)
-    if (hectaresInput) hectaresInput.addEventListener('input', calcularImpacto);
-    if (tecnologiaSelect) tecnologiaSelect.addEventListener('change', calcularImpacto);
-    // inicializar simulador
-    calcularImpacto();
-
-    // ---------- 3. QUIZ INTERATIVO (eventos, manipulação dinâmica DOM, transições, pontuação) ----------
-    const quizData = [
+    
+    // Calcula automaticamente
+    if (hectaresInput) {
+        hectaresInput.addEventListener('input', calcularCarbono);
+    }
+    if (tecnologiaSelect) {
+        tecnologiaSelect.addEventListener('change', calcularCarbono);
+    }
+    
+    // Executa a primeira vez
+    calcularCarbono();
+    
+    // ========== 3. QUIZ INTERATIVO (100% FUNCIONAL) ==========
+    const perguntas = [
         {
-            question: "Qual prática agrícola contribui diretamente para o sequestro de carbono no solo?",
-            options: ["Plantio direto na palha", "Queima da palhada", "Uso intensivo de arado", "Monocultura extensiva"],
-            correct: 0
+            pergunta: "Qual prática agrícola contribui diretamente para o sequestro de carbono no solo?",
+            opcoes: ["Plantio direto na palha", "Queima da palhada", "Uso intensivo de arado", "Monocultura extensiva"],
+            correta: 0
         },
         {
-            question: "O que é o conceito de 'ILPF'?",
-            options: ["Integração Lavoura-Pecuária-Floresta", "Índice de Logística Produtiva Familiar", "Inseminação de Larvas e Pragas Fixas", "Irrigação de Larga Perda de Fluxo"],
-            correct: 0
+            pergunta: "O que significa a sigla 'ILPF' na agricultura sustentável?",
+            opcoes: ["Integração Lavoura-Pecuária-Floresta", "Índice de Lucro por Fazenda", "Irrigação de Larga Precisão", "Insumo de Longa Proteção"],
+            correta: 0
         },
         {
-            question: "Qual tecnologia reduz o consumo de água na agricultura em até 50%?",
-            options: ["Irrigação por sulco", "Aspersão convencional", "Gotejamento e sensores de umidade", "Inundação controlada"],
-            correct: 2
+            pergunta: "Qual tecnologia reduz o consumo de água na agricultura em até 50%?",
+            opcoes: ["Irrigação por gotejamento", "Irrigação por aspersão", "Irrigação por inundação", "Irrigação por sulcos"],
+            correta: 0
         },
         {
-            question: "Biogás no campo é benéfico porque:",
-            options: ["Polui mais que diesel", "Aproveita resíduos e gera energia renovável", "Aumenta o efeito estufa", "Não tem aplicação real"],
-            correct: 1
+            pergunta: "O biogás produzido no campo é benéfico porque:",
+            opcoes: ["Aproveita resíduos e gera energia renovável", "Polui mais que o diesel", "É muito caro e inviável", "Não tem aplicação prática"],
+            correta: 0
         }
     ];
-
-    let currentQuestionIndex = 0;
-    let quizScore = 0;
-    let quizAnswered = false;
-    let totalQuestions = quizData.length;
-
-    const quizQuestionElem = document.getElementById('quizQuestion');
-    const quizOptionsElem = document.getElementById('quizOptions');
-    const quizFeedbackElem = document.getElementById('quizFeedback');
-    const nextQuizBtn = document.getElementById('nextQuizBtn');
-    const quizScoreText = document.getElementById('quizScoreText');
-
-    function updateScoreDisplay() {
-        quizScoreText.innerHTML = `✅ Pontuação: ${quizScore}/${totalQuestions}`;
+    
+    let perguntaAtual = 0;
+    let pontuacao = 0;
+    let respondeu = false;
+    let totalPerguntas = perguntas.length;
+    
+    const quizPergunta = document.getElementById('quizQuestion');
+    const quizOpcoes = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const nextBtn = document.getElementById('nextQuizBtn');
+    const scoreText = document.getElementById('quizScoreText');
+    
+    console.log('Elementos do quiz:', {
+        pergunta: quizPergunta,
+        opcoes: quizOpcoes,
+        feedback: quizFeedback,
+        nextBtn: nextBtn
+    });
+    
+    function atualizarPontuacao() {
+        scoreText.innerHTML = `✅ Pontuação: ${pontuacao}/${totalPerguntas}`;
     }
-
-    function loadQuestion() {
-        quizAnswered = false;
-        quizFeedbackElem.innerHTML = '';
-        const current = quizData[currentQuestionIndex];
-        quizQuestionElem.textContent = current.question;
-        quizOptionsElem.innerHTML = '';
-        current.options.forEach((opt, idx) => {
+    
+    function carregarPergunta() {
+        console.log('Carregando pergunta', perguntaAtual);
+        respondeu = false;
+        quizFeedback.innerHTML = '';
+        
+        const p = perguntas[perguntaAtual];
+        quizPergunta.innerHTML = p.pergunta;
+        
+        // Limpa e recria os botões
+        quizOpcoes.innerHTML = '';
+        
+        p.opcoes.forEach((opcao, index) => {
             const btn = document.createElement('button');
-            btn.textContent = opt;
+            btn.textContent = opcao;
             btn.classList.add('quiz-btn');
-            btn.setAttribute('data-opt-index', idx);
-            btn.addEventListener('click', () => handleAnswer(idx, btn));
-            quizOptionsElem.appendChild(btn);
+            btn.setAttribute('data-index', index);
+            btn.addEventListener('click', function() {
+                responderPergunta(index, btn);
+            });
+            quizOpcoes.appendChild(btn);
         });
-        const allBtns = document.querySelectorAll('.quiz-btn');
-        allBtns.forEach(btn => {
+        
+        // Habilita todos os botões
+        document.querySelectorAll('.quiz-btn').forEach(btn => {
             btn.disabled = false;
-            btn.style.opacity = '1';
+            btn.style.background = '#f1f3ec';
+            btn.style.color = '#1f2a1e';
         });
-        nextQuizBtn.disabled = false;
-        nextQuizBtn.textContent = (currentQuestionIndex === totalQuestions - 1) ? "Ver resultado final" : "Próxima pergunta →";
+        
+        // Atualiza texto do botão próximo
+        if (perguntaAtual === totalPerguntas - 1) {
+            nextBtn.innerHTML = '🏆 Ver resultado final';
+        } else {
+            nextBtn.innerHTML = 'Próxima pergunta →';
+        }
     }
-
-    function handleAnswer(selectedIdx, btnElement) {
-        if (quizAnswered) {
-            quizFeedbackElem.innerHTML = '⚠️ Você já respondeu esta pergunta! Avance para a próxima.';
+    
+    function responderPergunta(resposta, botao) {
+        if (respondeu) {
+            quizFeedback.innerHTML = '⚠️ Você já respondeu esta pergunta! Avance para a próxima.';
             return;
         }
-        const current = quizData[currentQuestionIndex];
-        const isCorrect = (selectedIdx === current.correct);
-        if (isCorrect) {
-            quizScore++;
-            quizFeedbackElem.innerHTML = '🎉 Correto! 🌾 Essa prática fortalece a sustentabilidade.';
-            btnElement.classList.add('highlight');
-            setTimeout(() => btnElement.classList.remove('highlight'), 400);
+        
+        console.log('Resposta selecionada:', resposta);
+        const p = perguntas[perguntaAtual];
+        const isCorreta = (resposta === p.correta);
+        
+        if (isCorreta) {
+            pontuacao++;
+            quizFeedback.innerHTML = '🎉 CORRETO! 🌾 Excelente conhecimento sobre agro sustentável!';
+            botao.style.background = '#4caf50';
+            botao.style.color = 'white';
         } else {
-            const respostaCerta = current.options[current.correct];
-            quizFeedbackElem.innerHTML = `❌ Resposta incorreta. A alternativa correta é: "${respostaCerta}". Estude mais sobre agroecologia!`;
-            btnElement.style.background = "#f5cfcf";
+            quizFeedback.innerHTML = `❌ INCORRETO! A resposta correta é: "${p.opcoes[p.correta]}"`;
+            botao.style.background = '#f44336';
+            botao.style.color = 'white';
+            
+            // Destaca a resposta correta em verde
+            const botoes = document.querySelectorAll('.quiz-btn');
+            botoes[p.correta].style.background = '#4caf50';
+            botoes[p.correta].style.color = 'white';
         }
-        quizAnswered = true;
-        updateScoreDisplay();
-
-        const allOptionBtns = document.querySelectorAll('.quiz-btn');
-        allOptionBtns.forEach(btn => {
+        
+        respondeu = true;
+        atualizarPontuacao();
+        
+        // Desabilita todos os botões
+        document.querySelectorAll('.quiz-btn').forEach(btn => {
             btn.disabled = true;
-            if (parseInt(btn.getAttribute('data-opt-index')) === current.correct && !isCorrect) {
-                btn.style.background = "#c8e6c9";
-                btn.style.border = "2px solid #2e7d32";
-            }
         });
     }
-
-    function nextQuestion() {
-        if (!quizAnswered && currentQuestionIndex < totalQuestions) {
-            quizFeedbackElem.innerHTML = '🔔 Por favor, selecione uma resposta antes de continuar.';
+    
+    function proximaPergunta() {
+        console.log('Próxima pergunta clicada, respondeu:', respondeu);
+        
+        if (!respondeu && perguntaAtual < totalPerguntas) {
+            quizFeedback.innerHTML = '🔔 Por favor, selecione uma resposta antes de continuar!';
             return;
         }
-        if (currentQuestionIndex + 1 < totalQuestions) {
-            currentQuestionIndex++;
-            loadQuestion();
+        
+        if (perguntaAtual + 1 < totalPerguntas) {
+            perguntaAtual++;
+            carregarPergunta();
         } else {
-            quizFeedbackElem.innerHTML = `✨ Quiz finalizado! Sua pontuação: ${quizScore}/${totalQuestions}. Recomece se quiser. 🌱`;
-            nextQuizBtn.textContent = "Recomeçar Quiz";
-            nextQuizBtn.disabled = false;
-            nextQuizBtn.onclick = () => {
-                resetQuiz();
+            // Fim do quiz
+            const mensagemFinal = pontuacao === totalPerguntas 
+                ? '🎉 PARABÉNS! Você acertou todas! Você é um especialista em agro sustentável! 🌟'
+                : `✨ Quiz finalizado! Você acertou ${pontuacao} de ${totalPerguntas} questões. ✨`;
+            
+            quizFeedback.innerHTML = mensagemFinal;
+            nextBtn.innerHTML = '🔄 Recomeçar Quiz';
+            
+            // Substitui o evento para reiniciar
+            nextBtn.onclick = function() {
+                reiniciarQuiz();
             };
-            return;
         }
     }
-
-    function resetQuiz() {
-        currentQuestionIndex = 0;
-        quizScore = 0;
-        quizAnswered = false;
-        updateScoreDisplay();
-        loadQuestion();
-        quizFeedbackElem.innerHTML = '♻️ Quiz reiniciado! Boa sorte.';
-        nextQuizBtn.onclick = nextQuestion;
-        nextQuizBtn.textContent = "Próxima pergunta →";
+    
+    function reiniciarQuiz() {
+        console.log('Reiniciando quiz');
+        perguntaAtual = 0;
+        pontuacao = 0;
+        respondeu = false;
+        atualizarPontuacao();
+        carregarPergunta();
+        quizFeedback.innerHTML = '♻️ Quiz reiniciado! Boa sorte! 🌱';
+        
+        // Restaura o evento original
+        nextBtn.onclick = proximaPergunta;
     }
-
-    if (nextQuizBtn) {
-        nextQuizBtn.onclick = nextQuestion;
+    
+    // Configura o evento do botão próximo
+    if (nextBtn) {
+        nextBtn.onclick = proximaPergunta;
+        console.log('Botão próximo configurado');
     }
-
-    loadQuestion();
-    updateScoreDisplay();
-
-    // Smooth scroll para links internos
+    
+    // Inicia o quiz
+    carregarPergunta();
+    atualizarPontuacao();
+    
+    // ========== 4. SCROLL SUAVE ==========
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
@@ -231,7 +285,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (target) {
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('Scroll para:', targetId);
             }
         });
     });
+    
+    console.log('Site completamente inicializado!');
 });
