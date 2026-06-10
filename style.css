@@ -9,7 +9,6 @@
     --verde-claro: #4caf50;
     --verde-destaque: #1b5e20;
     --bege-claro: #f9f7f3;
-    --sombra-suave: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
 }
 
 body {
@@ -168,7 +167,7 @@ section {
     background: white;
     border-radius: 28px;
     padding: 1.8rem;
-    box-shadow: var(--sombra-suave);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s;
     text-align: center;
     border: 1px solid #e0e7cf;
@@ -230,6 +229,7 @@ input, select {
     font-size: 2rem;
     font-weight: 800;
     color: #1b5e20;
+    margin: 10px 0;
 }
 
 /* QUIZ */
@@ -281,6 +281,8 @@ input, select {
     margin-top: 1rem;
     font-weight: 500;
     font-size: 1rem;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 /* FOOTER */
