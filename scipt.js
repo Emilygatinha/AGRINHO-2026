@@ -1,16 +1,18 @@
-// Aguarda o HTML carregar completamente
+// AGUARDA O HTML CARREGAR COMPLETAMENTE
 document.addEventListener('DOMContentLoaded', function() {
     
-    console.log('Site carregado!'); // Para teste no console
+    console.log('=== SITE INICIADO ===');
     
-    // ========== 1. MENU HAMBURGUER ==========
+    // ============================================
+    // 1. MENU HAMBURGUER
+    // ============================================
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
     
     if (menuToggle) {
         menuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('show');
-            console.log('Menu clicado'); // Teste
+            console.log('Menu alternado');
         });
     }
     
@@ -23,29 +25,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // ========== 2. CALCULADORA DE CARBONO (100% FUNCIONAL) ==========
+    // ============================================
+    // 2. CALCULADORA DE CARBONO (FUNCIONAL)
+    // ============================================
+    
+    // Pegando os elementos do DOM
     const hectaresInput = document.getElementById('hectares');
     const tecnologiaSelect = document.getElementById('tecnologia');
     const carbonoValue = document.getElementById('carbonoValue');
-    const mensagem = document.getElementById('mensagemDinamica');
+    const mensagemDinamica = document.getElementById('mensagemDinamica');
     const calcularBtn = document.getElementById('calcularBtn');
-    const resetBtn = document.getElementById('resetSimulador');
+    const resetSimuladorBtn = document.getElementById('resetSimulador');
     
-    // Verificar se os elementos existem
-    console.log('Elementos da calculadora:', {
-        hectares: hectaresInput,
-        tecnologia: tecnologiaSelect,
-        carbono: carbonoValue,
-        mensagem: mensagem
+    // Verificar se encontrou os elementos
+    console.log('Elementos encontrados:', {
+        hectares: !!hectaresInput,
+        tecnologia: !!tecnologiaSelect,
+        carbono: !!carbonoValue,
+        mensagem: !!mensagemDinamica,
+        calcular: !!calcularBtn,
+        reset: !!resetSimuladorBtn
     });
     
-    // Função principal da calculadora
+    // Função que calcula o carbono
     function calcularCarbono() {
-        console.log('Calculando...'); // Teste
+        console.log('=== CALCULANDO ===');
         
         // Pega os valores
         let hectares = parseFloat(hectaresInput.value);
-        const tecnologia = parseFloat(tecnologiaSelect.value);
+        let tecnologia = parseFloat(tecnologiaSelect.value);
         
         console.log('Hectares:', hectares, 'Tecnologia:', tecnologia);
         
@@ -53,16 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isNaN(hectares) || hectares < 1) {
             hectares = 100;
             hectaresInput.value = 100;
-            mensagem.innerHTML = '⚠️ Valor ajustado para 100 hectares';
+            mensagemDinamica.innerHTML = '⚠️ Valor ajustado para 100 hectares';
         }
         
         if (hectares > 10000) {
             hectares = 10000;
             hectaresInput.value = 10000;
-            mensagem.innerHTML = '⚠️ Limite máximo: 10.000 hectares';
+            mensagemDinamica.innerHTML = '⚠️ Limite máximo: 10.000 hectares';
         }
         
-        // CÁLCULO: hectares * 3.2 (fator médio de captura) * tecnologia
+        // CÁLCULO: hectares * 3.2 (fator médio) * tecnologia
         let carbonoTotal = hectares * 3.2 * tecnologia;
         carbonoTotal = Math.round(carbonoTotal * 10) / 10;
         
@@ -71,33 +79,35 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Mensagem personalizada
         if (carbonoTotal > 1000) {
-            mensagem.innerHTML = '🚜✨ Excelente! Fazenda carbono neutro! Continue assim!';
+            mensagemDinamica.innerHTML = '🚜✨ EXCELENTE! Fazenda carbono neutro! Parabéns!';
         } else if (carbonoTotal > 400) {
-            mensagem.innerHTML = '💚 Bom caminho! Invista em mais tecnologias verdes.';
+            mensagemDinamica.innerHTML = '💚 BOM CAMINHO! Continue investindo em tecnologias verdes.';
         } else {
-            mensagem.innerHTML = '🌱 Aumente o nível tecnológico para capturar mais carbono.';
+            mensagemDinamica.innerHTML = '🌱 INVISTA MAIS! Aumente o nível tecnológico para capturar mais carbono.';
         }
         
-        console.log('Resultado:', carbonoTotal);
+        console.log('Resultado:', carbonoTotal, 't CO₂e');
     }
     
-    // Eventos da calculadora
+    // Configurar eventos da calculadora
     if (calcularBtn) {
-        calcularBtn.addEventListener('click', calcularCarbono);
-        console.log('Botão calcular configurado');
-    }
-    
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            hectaresInput.value = 100;
-            tecnologiaSelect.value = "1.2";
+        calcularBtn.addEventListener('click', function() {
+            console.log('Botão CALCULAR clicado');
             calcularCarbono();
-            mensagem.innerHTML = '💧 Valores resetados! Simule novos cenários.';
-            console.log('Resetado');
         });
     }
     
-    // Calcula automaticamente
+    if (resetSimuladorBtn) {
+        resetSimuladorBtn.addEventListener('click', function() {
+            console.log('Botão RESETAR clicado');
+            hectaresInput.value = 100;
+            tecnologiaSelect.value = "1.2";
+            calcularCarbono();
+            mensagemDinamica.innerHTML = '💧 Valores resetados! Simule novos cenários.';
+        });
+    }
+    
+    // Atualizar automaticamente quando digitar ou mudar
     if (hectaresInput) {
         hectaresInput.addEventListener('input', calcularCarbono);
     }
@@ -105,10 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
         tecnologiaSelect.addEventListener('change', calcularCarbono);
     }
     
-    // Executa a primeira vez
+    // Executar cálculo inicial
     calcularCarbono();
     
-    // ========== 3. QUIZ INTERATIVO (100% FUNCIONAL) ==========
+    // ============================================
+    // 3. QUIZ INTERATIVO (FUNCIONAL)
+    // ============================================
+    
+    // Banco de perguntas
     const perguntas = [
         {
             pergunta: "Qual prática agrícola contribui diretamente para o sequestro de carbono no solo?",
@@ -132,11 +146,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
+    // Variáveis do quiz
     let perguntaAtual = 0;
     let pontuacao = 0;
     let respondeu = false;
     let totalPerguntas = perguntas.length;
     
+    // Elementos do quiz
     const quizPergunta = document.getElementById('quizQuestion');
     const quizOpcoes = document.getElementById('quizOptions');
     const quizFeedback = document.getElementById('quizFeedback');
@@ -144,56 +160,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const scoreText = document.getElementById('quizScoreText');
     
     console.log('Elementos do quiz:', {
-        pergunta: quizPergunta,
-        opcoes: quizOpcoes,
-        feedback: quizFeedback,
-        nextBtn: nextBtn
+        pergunta: !!quizPergunta,
+        opcoes: !!quizOpcoes,
+        feedback: !!quizFeedback,
+        nextBtn: !!nextBtn,
+        score: !!scoreText
     });
     
+    // Atualizar pontuação na tela
     function atualizarPontuacao() {
-        scoreText.innerHTML = `✅ Pontuação: ${pontuacao}/${totalPerguntas}`;
-    }
-    
-    function carregarPergunta() {
-        console.log('Carregando pergunta', perguntaAtual);
-        respondeu = false;
-        quizFeedback.innerHTML = '';
-        
-        const p = perguntas[perguntaAtual];
-        quizPergunta.innerHTML = p.pergunta;
-        
-        // Limpa e recria os botões
-        quizOpcoes.innerHTML = '';
-        
-        p.opcoes.forEach((opcao, index) => {
-            const btn = document.createElement('button');
-            btn.textContent = opcao;
-            btn.classList.add('quiz-btn');
-            btn.setAttribute('data-index', index);
-            btn.addEventListener('click', function() {
-                responderPergunta(index, btn);
-            });
-            quizOpcoes.appendChild(btn);
-        });
-        
-        // Habilita todos os botões
-        document.querySelectorAll('.quiz-btn').forEach(btn => {
-            btn.disabled = false;
-            btn.style.background = '#f1f3ec';
-            btn.style.color = '#1f2a1e';
-        });
-        
-        // Atualiza texto do botão próximo
-        if (perguntaAtual === totalPerguntas - 1) {
-            nextBtn.innerHTML = '🏆 Ver resultado final';
-        } else {
-            nextBtn.innerHTML = 'Próxima pergunta →';
+        if (scoreText) {
+            scoreText.innerHTML = `✅ Pontuação: ${pontuacao}/${totalPerguntas}`;
         }
     }
     
+    // Carregar pergunta atual
+    function carregarPergunta() {
+        console.log('Carregando pergunta', perguntaAtual + 1);
+        respondeu = false;
+        
+        if (quizFeedback) quizFeedback.innerHTML = '';
+        
+        const p = perguntas[perguntaAtual];
+        if (quizPergunta) quizPergunta.innerHTML = p.pergunta;
+        
+        // Limpar e recriar botões
+        if (quizOpcoes) {
+            quizOpcoes.innerHTML = '';
+            
+            p.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = opcao;
+                btn.classList.add('quiz-btn');
+                btn.style.margin = '5px';
+                btn.setAttribute('data-index', index);
+                
+                btn.addEventListener('click', function() {
+                    responderPergunta(index, btn);
+                });
+                
+                quizOpcoes.appendChild(btn);
+            });
+        }
+        
+        // Atualizar texto do botão próximo
+        if (nextBtn) {
+            if (perguntaAtual === totalPerguntas - 1) {
+                nextBtn.innerHTML = '🏆 Ver resultado final';
+            } else {
+                nextBtn.innerHTML = 'Próxima pergunta →';
+            }
+        }
+    }
+    
+    // Função para responder
     function responderPergunta(resposta, botao) {
         if (respondeu) {
-            quizFeedback.innerHTML = '⚠️ Você já respondeu esta pergunta! Avance para a próxima.';
+            if (quizFeedback) quizFeedback.innerHTML = '⚠️ Você já respondeu esta pergunta! Avance para a próxima.';
             return;
         }
         
@@ -203,34 +226,50 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isCorreta) {
             pontuacao++;
-            quizFeedback.innerHTML = '🎉 CORRETO! 🌾 Excelente conhecimento sobre agro sustentável!';
+            if (quizFeedback) {
+                quizFeedback.innerHTML = '🎉 CORRETO! 🌾 Excelente conhecimento sobre agro sustentável!';
+                quizFeedback.style.background = '#d4edda';
+                quizFeedback.style.color = '#155724';
+            }
             botao.style.background = '#4caf50';
             botao.style.color = 'white';
         } else {
-            quizFeedback.innerHTML = `❌ INCORRETO! A resposta correta é: "${p.opcoes[p.correta]}"`;
+            if (quizFeedback) {
+                quizFeedback.innerHTML = `❌ INCORRETO! A resposta correta é: "${p.opcoes[p.correta]}"`;
+                quizFeedback.style.background = '#f8d7da';
+                quizFeedback.style.color = '#721c24';
+            }
             botao.style.background = '#f44336';
             botao.style.color = 'white';
             
-            // Destaca a resposta correta em verde
+            // Destacar resposta correta
             const botoes = document.querySelectorAll('.quiz-btn');
-            botoes[p.correta].style.background = '#4caf50';
-            botoes[p.correta].style.color = 'white';
+            if (botoes[p.correta]) {
+                botoes[p.correta].style.background = '#4caf50';
+                botoes[p.correta].style.color = 'white';
+            }
         }
         
         respondeu = true;
         atualizarPontuacao();
         
-        // Desabilita todos os botões
-        document.querySelectorAll('.quiz-btn').forEach(btn => {
+        // Desabilitar todos os botões
+        const botoes = document.querySelectorAll('.quiz-btn');
+        botoes.forEach(btn => {
             btn.disabled = true;
         });
     }
     
+    // Próxima pergunta ou finalizar
     function proximaPergunta() {
-        console.log('Próxima pergunta clicada, respondeu:', respondeu);
+        console.log('Próxima pergunta, respondeu:', respondeu);
         
-        if (!respondeu && perguntaAtual < totalPerguntas) {
-            quizFeedback.innerHTML = '🔔 Por favor, selecione uma resposta antes de continuar!';
+        if (!respondeu) {
+            if (quizFeedback) {
+                quizFeedback.innerHTML = '🔔 Por favor, selecione uma resposta antes de continuar!';
+                quizFeedback.style.background = '#fff3cd';
+                quizFeedback.style.color = '#856404';
+            }
             return;
         }
         
@@ -239,44 +278,60 @@ document.addEventListener('DOMContentLoaded', function() {
             carregarPergunta();
         } else {
             // Fim do quiz
-            const mensagemFinal = pontuacao === totalPerguntas 
-                ? '🎉 PARABÉNS! Você acertou todas! Você é um especialista em agro sustentável! 🌟'
-                : `✨ Quiz finalizado! Você acertou ${pontuacao} de ${totalPerguntas} questões. ✨`;
+            let mensagemFinal = '';
+            if (pontuacao === totalPerguntas) {
+                mensagemFinal = '🎉 PARABÉNS! Você acertou todas! Você é um especialista em agro sustentável! 🌟';
+            } else {
+                mensagemFinal = `✨ Quiz finalizado! Você acertou ${pontuacao} de ${totalPerguntas} questões. ✨`;
+            }
             
-            quizFeedback.innerHTML = mensagemFinal;
-            nextBtn.innerHTML = '🔄 Recomeçar Quiz';
+            if (quizFeedback) {
+                quizFeedback.innerHTML = mensagemFinal;
+                quizFeedback.style.background = '#d1ecf1';
+                quizFeedback.style.color = '#0c5460';
+            }
             
-            // Substitui o evento para reiniciar
-            nextBtn.onclick = function() {
-                reiniciarQuiz();
-            };
+            if (nextBtn) {
+                nextBtn.innerHTML = '🔄 Recomeçar Quiz';
+                nextBtn.onclick = function() {
+                    reiniciarQuiz();
+                };
+            }
         }
     }
     
+    // Reiniciar quiz
     function reiniciarQuiz() {
         console.log('Reiniciando quiz');
         perguntaAtual = 0;
         pontuacao = 0;
         respondeu = false;
+        
         atualizarPontuacao();
         carregarPergunta();
-        quizFeedback.innerHTML = '♻️ Quiz reiniciado! Boa sorte! 🌱';
         
-        // Restaura o evento original
-        nextBtn.onclick = proximaPergunta;
+        if (quizFeedback) {
+            quizFeedback.innerHTML = '♻️ Quiz reiniciado! Boa sorte! 🌱';
+            quizFeedback.style.background = '#e2f0d9';
+            quizFeedback.style.color = '#2e7d32';
+        }
+        
+        if (nextBtn) {
+            nextBtn.onclick = proximaPergunta;
+        }
     }
     
-    // Configura o evento do botão próximo
+    // Inicializar quiz
     if (nextBtn) {
         nextBtn.onclick = proximaPergunta;
-        console.log('Botão próximo configurado');
     }
     
-    // Inicia o quiz
     carregarPergunta();
     atualizarPontuacao();
     
-    // ========== 4. SCROLL SUAVE ==========
+    // ============================================
+    // 4. SCROLL SUAVE
+    // ============================================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
@@ -290,5 +345,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    console.log('Site completamente inicializado!');
+    console.log('=== SITE PRONTO PARA USO ===');
 });
